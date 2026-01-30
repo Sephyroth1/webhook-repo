@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 
+function formatTimestamp(utcString) {
+  return new Date(utcString).toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+}
 function App() {
   const [events, setEvents] = useState([]);
 
   const fetchEvents = async () => {
     try {
-      const res = await fetch("https://a9462324ecaa.ngrok-free.app/events", {
+      const res = await fetch("https://92feeadf821d.ngrok-free.app/events", {
         headers: {
           "ngrok-skip-browser-warning": "true",
         },
@@ -45,11 +51,11 @@ function App() {
       {events.map((e, i) => {
         let text = "";
         if (e.action === "PUSH") {
-          text = `${e.author} pushed to ${e.to_branch} on ${e.timestamp}`;
+          text = `${e.author} pushed to ${e.to_branch} on ${formatTimestamp(e.timestamp)}`;
         } else if (e.action === "PULL_REQUEST") {
-          text = `${e.author} submitted a pull request from ${e.from_branch} to ${e.to_branch} on ${e.timestamp}`;
+          text = `${e.author} submitted a pull request from ${e.from_branch} to ${e.to_branch} on ${formatTimestamp(e.timestamp)}`;
         } else if (e.action === "MERGE") {
-          text = `${e.author} merged branch ${e.from_branch} to ${e.to_branch} on ${e.timestamp}`;
+          text = `${e.author} merged branch ${e.from_branch} to ${e.to_branch} on ${formatTimestamp(e.timestamp)}`;
         }
         return (
           <p key={i} style={{ fontSize: "16px", textAlign: "left" }}>
